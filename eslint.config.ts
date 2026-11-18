@@ -21,6 +21,7 @@ export default defineConfig(
       'package*.json',
       'public',
       'storybook-static',
+      'src/stories/**',
     ],
   },
   js.configs.recommended,

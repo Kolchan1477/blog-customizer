@@ -1,5 +1,6 @@
-import { defaultArticleState } from '@/constants/articleProps.ts';
+import { defaultArticleState, type ArticleStateType } from '@/constants/articleProps'; // Добавили type и ArticleStateType
 import { clsx } from 'clsx';
+import { useState } from 'react';
 
 import { ArticleParamsForm } from '@components/article-params-form';
 
@@ -10,20 +11,26 @@ import type { CSSProperties } from 'react';
 import styles from './app.module.scss';
 
 export const App = (): React.JSX.Element => {
+  // Создаем состояние для примененных настроек. По умолчанию берем дефолтные.
+  const [appliedState, setAppliedState] =
+    useState<ArticleStateType>(defaultArticleState);
+
   return (
     <main
       className={clsx(styles.main)}
       style={
         {
-          '--font-family': defaultArticleState.fontFamilyOption.value,
-          '--font-size': defaultArticleState.fontSizeOption.value,
-          '--font-color': defaultArticleState.fontColor.value,
-          '--container-width': defaultArticleState.contentWidth.value,
-          '--bg-color': defaultArticleState.backgroundColor.value,
+          // Используем значения из состояния, а не константы
+          '--font-family': appliedState.fontFamilyOption.value,
+          '--font-size': appliedState.fontSizeOption.value,
+          '--font-color': appliedState.fontColor.value,
+          '--container-width': appliedState.contentWidth.value,
+          '--bg-color': appliedState.backgroundColor.value,
         } as CSSProperties
       }
     >
-      <ArticleParamsForm />
+      {/* Передаем сеттер (функцию изменения состояния) в форму как пропс onApply */}
+      <ArticleParamsForm onApply={setAppliedState} />
       <Article />
     </main>
   );
