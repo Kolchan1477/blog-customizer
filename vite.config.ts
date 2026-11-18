@@ -2,7 +2,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
-import readableClassnames from 'vite-plugin-readable-classnames';
+//import readableClassnames from 'vite-plugin-readable-classnames';
 import sassDts from 'vite-plugin-sass-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -17,12 +17,19 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 export default defineConfig({
   plugins: [checker({
     typescript: true
-  }), react(), readableClassnames(), sassDts({
+  }), react(),
+  // readableClassnames(),
+  sassDts({
     enabledMode: ['development'],
     esmExport: true
   }), tsconfigPaths()],
   base: '',
   css: {
+    // ДОБАВИТЬ ВОТ ЭТОТ БЛОК:
+    modules: {
+      generateScopedName: '[name]-module__[local]___[hash:base64:5]',
+    },
+    // КОНЕЦ ДОБАВЛЕННОГО БЛОКА
     preprocessorOptions: {
       scss: {
         // @ts-expect-error api is a valid sass option but not in Vite's types yet
