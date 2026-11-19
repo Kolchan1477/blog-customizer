@@ -8,7 +8,7 @@ import { Article } from '../article/Article';
 
 import type { CSSProperties } from 'react';
 
-import styles from './app.module.scss';
+import styles from './index.module.scss';
 
 export const App = (): React.JSX.Element => {
   // Создаем состояние для примененных настроек. По умолчанию берем дефолтные.
