@@ -32,10 +32,18 @@ export const ArticleParamsForm = ({
 
   useEffect((): (() => void) => {
     const handleClickOutside = (event: MouseEvent): void => {
+      const target = event.target as HTMLElement;
+
+      // Проверяем, не является ли цель клика кнопкой-стрелкой или её потомком (например, картинкой)
+      const isArrowButton = target.closest(
+        '[aria-label="Открыть/Закрыть форму параметров статьи"]'
+      );
+
       if (
         isOpen &&
         containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        !containerRef.current.contains(target) &&
+        !isArrowButton // <--- ИГНОРИРУЕМ КЛИК ПО СТРЕЛКЕ
       ) {
         setIsOpen(false);
       }
