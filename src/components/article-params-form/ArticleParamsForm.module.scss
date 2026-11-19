@@ -3,7 +3,7 @@
 	left: 0;
 	width: 616px;
 	height: 100%;
-	overflow: scroll;
+	overflow-y: auto;
 	//transform: translate(-616px);
   transform: translateX(-100%);
 	/* Анимируем только transform, а visibility меняется мгновенно */
