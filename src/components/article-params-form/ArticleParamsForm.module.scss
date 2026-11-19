@@ -10,7 +10,9 @@
 }
 
 .container_open {
-	transform: translate(0);
+	//transform: translate(0);
+  /* ИСПРАВЛЕНО: используем translateX или none */
+	transform: translateX(0);
 }
 
 .form {
