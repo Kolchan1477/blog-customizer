@@ -6,20 +6,19 @@
 	overflow: scroll;
 	//transform: translate(-616px);
   transform: translateX(-100%);
-	transition: transform 0.5s ease;
+	/* Анимируем только transform, а visibility меняется мгновенно */
+	transition: transform 0.5s ease, visibility 0s linear 0.5s;
 
-  /* ДОБАВЛЯЕМ ЭТО: */
 	opacity: 0;
 	visibility: hidden;
 }
 
 .container_open {
-	//transform: translate(0);
-  /* ИСПРАВЛЕНО: используем translateX или none */
 	transform: translateX(0);
-
-  /* ДОБАВЛЯЕМ ЭТО: */
 	opacity: 1;
+
+	/* При открытии visibility включается сразу */
+	transition: transform 0.5s ease, visibility 0s linear 0s;
 	visibility: visible;
 }
 
