@@ -4,7 +4,8 @@
 	width: 616px;
 	height: 100%;
 	overflow: scroll;
-	transform: translate(-616px);
+	//transform: translate(-616px);
+  transform: translateX(-100%);
 	transition: transform 0.5s ease;
 }
 
