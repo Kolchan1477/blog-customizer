@@ -27,7 +27,7 @@ export default defineConfig({
   base: '',
   css: {
     modules: {
-      generateScopedName: '[name]-module__[local]___[hash:base64:5]',
+      generateScopedName: '[name]__[local]___[hash:base64:5]',
     },
     preprocessorOptions: {
       scss: {
