@@ -25,7 +25,11 @@ export const Option = (props: OptionProps): React.JSX.Element => {
 
   useEnterSubmit({ onChange, option });
 
+  // 1. ID для связки label и input (оставляем как в стартере)
   const inputId = `${groupName}_radio_item_with_value__${value}`;
+
+  // 2. Test ID для Playwright (строго как хочет тест)
+  const testId = `radio_radio_item_with_value__${value}`;
 
   const isChecked = value === selected.value;
 
@@ -34,7 +38,7 @@ export const Option = (props: OptionProps): React.JSX.Element => {
       className={styles.item}
       key={value}
       data-checked={isChecked}
-      data-testid={inputId}
+      data-testid={testId}
       tabIndex={0}
       ref={optionRef}
     >
