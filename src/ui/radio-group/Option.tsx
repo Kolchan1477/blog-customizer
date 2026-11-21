@@ -25,15 +25,8 @@ export const Option = (props: OptionProps): React.JSX.Element => {
 
   useEnterSubmit({ onChange, option });
 
-  // --- БЫЛО: ---
-  // const inputId = `${groupName}_radio_item_with_value__${value}`;
-  // const isChecked = value === selected.title;
+  const inputId = `${groupName}_radio_item_with_value__${value}`;
 
-  // --- СТАЛО (для прохождения тестов): ---
-  // Тесты Playwright ищут data-testid строго с префиксом "radio_radio_item_with_value__"
-  const inputId = `radio_radio_item_with_value__${value}`;
-
-  // Исправлено сравнение: selected хранит объект OptionType, поэтому сравниваем с selected.value
   const isChecked = value === selected.value;
 
   return (
@@ -41,7 +34,7 @@ export const Option = (props: OptionProps): React.JSX.Element => {
       className={styles.item}
       key={value}
       data-checked={isChecked}
-      data-testid={inputId} // Здесь теперь будет, например, "radio_radio_item_with_value__38px"
+      data-testid={inputId}
       tabIndex={0}
       ref={optionRef}
     >
@@ -53,7 +46,7 @@ export const Option = (props: OptionProps): React.JSX.Element => {
         value={value}
         onChange={handleChange}
         tabIndex={-1}
-        checked={isChecked} // Добавлено для контролируемого инпута (чтобы React управлял выбором)
+        checked={isChecked}
       />
       <label className={styles.label} htmlFor={inputId}>
         <Text size={18} uppercase>

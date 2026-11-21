@@ -26,26 +26,21 @@ type ArticleParamsFormProps = {
 export const ArticleParamsForm = ({
   onApply,
 }: ArticleParamsFormProps): React.JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [formState, setFormState] = useState<ArticleStateType>(defaultArticleState);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect((): (() => void) => {
+    if (!isFormOpen) return;
+
     const handleClickOutside = (event: MouseEvent): void => {
-      const target = event.target as HTMLElement;
-
-      // Проверяем, не является ли цель клика кнопкой-стрелкой или её потомком (например, картинкой)
-      const isArrowButton = target.closest(
-        '[aria-label="Открыть/Закрыть форму параметров статьи"]'
-      );
-
+      // Используем instanceof Node вместо as Node
       if (
-        isOpen &&
-        containerRef.current &&
-        !containerRef.current.contains(target) &&
-        !isArrowButton // <--- ИГНОРИРУЕМ КЛИК ПО СТРЕЛКЕ
+        rootRef.current &&
+        event.target instanceof Node &&
+        !rootRef.current.contains(event.target)
       ) {
-        setIsOpen(false);
+        setIsFormOpen(false);
       }
     };
 
@@ -53,17 +48,16 @@ export const ArticleParamsForm = ({
     return (): void => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isFormOpen]);
 
-  const handleFieldChange = (
-    fieldName: keyof ArticleStateType,
-    value: OptionType
-  ): void => {
-    setFormState((prevState) => ({
-      ...prevState,
-      [fieldName]: value,
-    }));
-  };
+  const handleFieldChange =
+    (fieldName: keyof ArticleStateType) =>
+    (value: OptionType): void => {
+      setFormState((prevState) => ({
+        ...prevState,
+        [fieldName]: value,
+      }));
+    };
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
@@ -77,15 +71,15 @@ export const ArticleParamsForm = ({
   };
 
   return (
-    <>
-      <ArrowButton isOpen={isOpen} onClick={(): void => setIsOpen(!isOpen)} />
+    <div ref={rootRef}>
+      <ArrowButton
+        isOpen={isFormOpen}
+        onClick={(): void => setIsFormOpen(!isFormOpen)}
+      />
 
-      <aside
-        className={clsx(styles.container, { [styles.container_open]: isOpen })}
-        ref={containerRef}
-      >
+      <aside className={clsx(styles.container, { [styles.container_open]: isFormOpen })}>
         <form className={styles.form} onSubmit={handleSubmit} onReset={handleReset}>
-          <Text size={31} weight={800} uppercase>
+          <Text as="h2" size={31} weight={800} uppercase>
             Задайте параметры
           </Text>
 
@@ -93,7 +87,7 @@ export const ArticleParamsForm = ({
             title="Шрифт"
             selected={formState.fontFamilyOption}
             options={fontFamilyOptions}
-            onChange={(option): void => handleFieldChange('fontFamilyOption', option)}
+            onChange={handleFieldChange('fontFamilyOption')}
           />
 
           <RadioGroup
@@ -101,14 +95,14 @@ export const ArticleParamsForm = ({
             name="fontSize"
             options={fontSizeOptions}
             selected={formState.fontSizeOption}
-            onChange={(option): void => handleFieldChange('fontSizeOption', option)}
+            onChange={handleFieldChange('fontSizeOption')}
           />
 
           <Select
             title="Цвет шрифта"
             selected={formState.fontColor}
             options={fontColors}
-            onChange={(option): void => handleFieldChange('fontColor', option)}
+            onChange={handleFieldChange('fontColor')}
           />
 
           <Separator />
@@ -117,14 +111,14 @@ export const ArticleParamsForm = ({
             title="Цвет фона"
             selected={formState.backgroundColor}
             options={backgroundColors}
-            onChange={(option): void => handleFieldChange('backgroundColor', option)}
+            onChange={handleFieldChange('backgroundColor')}
           />
 
           <Select
             title="Ширина контента"
             selected={formState.contentWidth}
             options={contentWidthArr}
-            onChange={(option): void => handleFieldChange('contentWidth', option)}
+            onChange={handleFieldChange('contentWidth')}
           />
 
           <div className={styles.bottomContainer}>
@@ -133,6 +127,6 @@ export const ArticleParamsForm = ({
           </div>
         </form>
       </aside>
-    </>
+    </div>
   );
 };
